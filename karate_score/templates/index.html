@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Karate Score</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.socket.io/4.8.3/socket.io.min.js" integrity="sha384-kzavj5fiMwLKzzD1f8S7TeoVIEi7uKHvbTA3ueZkrzYq75pNQUiUi6Dy98Q3fxb0" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <main>
+      <h1>Scoreboard Kumite</h1>
+      <section class="score-panels" aria-label="Scoreboard">
+        <article class="score-panel score-panel-red">
+          <div class="opponent">
+            <h2 class="opponent-name">Aka</h2>
+            <p class="club-name">Karate Club</p>
+          </div>
+          <div class="score">0</div>
+        </article>
+        <article class="score-panel score-panel-blue">
+          <div class="opponent">
+            <h2 class="opponent-name">Ao</h2>
+            <p class="club-name">Karate Club</p>
+          </div>
+          <div class="score">0</div>
+        </article>
+      </section>
+    </main>
+    <script src="{{ url_for('static', filename='application.js') }}"></script>
+  </body>
+</html>

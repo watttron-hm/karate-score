@@ -1,0 +1,46 @@
+[project]
+name = "karate-score"
+version = "0.1.0"
+description = "Score Board for a Karate tournament"
+authors = [
+    { name = "Hannes Müller", email = "hannes.mueller@watttron.com" },
+]
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "flask>=3.0",
+    "flask-socketio>=5.0",
+    "gevent>=24.0",
+    "gunicorn>=20.1.0,<22.0.0",
+    "toml>=0.10.2,<1.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=80.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["karate_score"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+karate_score = [
+    "templates/*.html",
+    "static/*.css",
+    "static/*.js",
+    "static/images/*",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]
+
+[tool.pytest.ini_options]
+addopts = "-p no:cacheprovider"
+pythonpath = [
+    ".",
+]
+testpaths = [
+    "tests",
+]
