@@ -1,0 +1,236 @@
+﻿    <!DOCTYPE html>
+    <html lang="de">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>DJKB Karate Scoreboard</title>
+
+        <meta name="author" content="Marco Herrmann">
+        <meta name="date" content="2026-05-18T20:00:00+01:00">
+        <meta name="description" content="DJKB Scoreboard">
+        <meta name="keywords" content="Scoreboard, DJKB, Turnier, Wettkampf, Wertungstafel">
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='scoreboard.css') }}">
+        <link rel="icon" href="favicon.ico" sizes="16x16" type="../images/vnd.microsoft.icon">
+
+
+    </head>
+    <body>
+
+    <div class="operator-layout">
+
+        <!-- =========================
+            CONTROLS
+        ========================== -->
+
+        <div class="controls">
+
+            <h2>DJKB Scoreboard Control</h2>
+
+            <!-- AKA -->
+            <div class="fighter-controls aka-controls">
+                <h3>AKA (ROT)</h3>
+
+                <input id="akaName" placeholder="Name">
+                <input id="akaClub" placeholder="Verein">
+                <input id="akaFlag" placeholder="Flag Emoji (🇩🇪)">
+            </div>
+
+            <!-- SHIRO -->
+            <div class="fighter-controls shiro-controls">
+                <h3>SHIRO (WEISS)</h3>
+
+                <input id="shiroName" placeholder="Name">
+                <input id="shiroClub" placeholder="Verein">
+                <input id="shiroFlag" placeholder="Flag Emoji (🇯🇵)">
+            </div>
+
+            <!-- MATCH INFO -->
+            <div class="control-section">
+                <h2>Kampf Informationen</h2>
+
+                <h3>Kampfzeit</h3>
+                <div class="fight-time-text" id="fightTimeDisplay">02 min : 00 sec</div>
+                <input id="minutes" class="hidden-time-input" type="number" value="2">
+                <input id="seconds" class="hidden-time-input" type="number" value="0">
+
+            <button class="btn-green" onclick="startTimer()">Start</button>
+            <button class="btn-orange" onclick="pauseTimer()">Pause</button>
+            <button class="btn-blue" onclick="resetTimer()">Reset</button>
+        </div>
+
+        <div class="history-controls">
+            <button class="btn-dark" id="undoButton" type="button" onclick="undoLastAction()" disabled style="font-size: 50px;">⟲</button>
+            <button class="btn-dark" id="redoButton" type="button" onclick="redoLastAction()" disabled style="font-size: 50px;">⟳</button>
+        </div>
+
+        <button class="btn-red reset-all-button" type="button" onclick="resetAll()">Reset All</button>
+
+    </div>
+
+        <!-- =========================
+            DISPLAY
+        ========================== -->
+
+        <div class="display" id="displayArea">
+
+            <!-- AKA -->
+            <div class="fighter aka">
+
+                <div class="fighter-left">
+                    <div class="flag" id="akaFlagDisplay">🇩🇪</div>
+
+                    <div class="fighter-info">
+                        <h1 id="akaNameDisplay">AKA</h1>
+                        <h2 id="akaClubDisplay">Verein</h2>
+                    </div>
+                </div>
+
+                <div class="fighter-right">
+
+                    <div class="score-box">
+                        <div class="label">IPPON</div>
+                        <div class="value" id="akaIppon">0</div>
+                        <div class="score-stepper" aria-label="AKA Ippon">
+                            <button class="score-step-button btn-red" type="button" onclick="changeScore('aka','ippon',1)" aria-label="AKA Ippon erhöhen">+</button>
+                            <button class="score-step-button btn-dark" type="button" onclick="changeScore('aka','ippon',-1)" aria-label="AKA Ippon verringern">-</button>
+                        </div>
+                    </div>
+
+                    <div class="score-box">
+                        <div class="label">WAZA-ARI</div>
+                        <div class="value" id="akaWaza">0</div>
+                        <div class="score-stepper" aria-label="AKA Waza-ari">
+                            <button class="score-step-button btn-red" type="button" onclick="changeScore('aka','waza',1)" aria-label="AKA Waza-ari erhöhen">+</button>
+                            <button class="score-step-button btn-dark" type="button" onclick="changeScore('aka','waza',-1)" aria-label="AKA Waza-ari verringern">-</button>
+                        </div>
+                    </div>
+
+                    <div class="penalties">
+                        <div class="penalty-header">
+                            <div class="penalty-label"></div>
+                            <div class="penalty-columns">
+                                <span>Clear</span>
+                                <span>KEIKOKU</span>
+                                <span>CHUI</span>
+                                <span>HANSOKU</span>
+                            </div>
+                        </div>
+
+                        <div class="penalty-row">
+                            <div class="penalty-label">JOGAI</div>
+                            <div class="dots" id="akaPenalty0"></div>
+                        </div>
+
+                        <div class="penalty-row">
+                            <div class="penalty-label">MUBOBI</div>
+                            <div class="dots" id="akaPenalty1"></div>
+                        </div>
+
+                        <div class="penalty-row">
+                            <div class="penalty-label">Strafe</div>
+                            <div class="dots" id="akaPenalty2"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- SHIRO -->
+            <div class="fighter shiro">
+
+                <div class="fighter-left">
+                    <div class="flag" id="shiroFlagDisplay">🇯🇵</div>
+
+                    <div class="fighter-info">
+                        <h1 id="shiroNameDisplay">SHIRO</h1>
+                        <h2 id="shiroClubDisplay">Verein</h2>
+                    </div>
+                </div>
+
+                <div class="fighter-right">
+
+                    <div class="score-box">
+                        <div class="label">IPPON</div>
+                        <div class="value" id="shiroIppon">0</div>
+                        <div class="score-stepper" aria-label="SHIRO Ippon">
+                            <button class="score-step-button btn-white" type="button" onclick="changeScore('shiro','ippon',1)" aria-label="SHIRO Ippon erhöhen">+</button>
+                            <button class="score-step-button btn-dark" type="button" onclick="changeScore('shiro','ippon',-1)" aria-label="SHIRO Ippon verringern">-</button>
+                        </div>
+                    </div>
+
+                    <div class="score-box">
+                        <div class="label">WAZA-ARI</div>
+                        <div class="value" id="shiroWaza">0</div>
+                        <div class="score-stepper" aria-label="SHIRO Waza-ari">
+                            <button class="score-step-button btn-white" type="button" onclick="changeScore('shiro','waza',1)" aria-label="SHIRO Waza-ari erhöhen">+</button>
+                            <button class="score-step-button btn-dark" type="button" onclick="changeScore('shiro','waza',-1)" aria-label="SHIRO Waza-ari verringern">-</button>
+                        </div>
+                    </div>
+
+                    <div class="penalties">
+                        <div class="penalty-header">
+                            <div class="penalty-label"></div>
+                            <div class="penalty-columns">
+                                <span>Clear</span>
+                                <span>KEIKOKU</span>
+                                <span>CHUI</span>
+                                <span>HANSOKU</span>
+                            </div>
+                        </div>
+
+                        <div class="penalty-row">
+                            <div class="penalty-label">JOGAI</div>
+                            <div class="dots" id="shiroPenalty0"></div>
+                        </div>
+
+                        <div class="penalty-row">
+                            <div class="penalty-label">MUBOBI</div>
+                            <div class="dots" id="shiroPenalty1"></div>
+                        </div>
+
+                        <div class="penalty-row">
+                            <div class="penalty-label">Strafe</div>
+                            <div class="dots" id="shiroPenalty2"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- MATCH INFO -->
+            <div class="match-info">
+
+                <div class="info-block">
+                    <div class="info-label">Kampf</div>
+                    <input class="inline-info-input info-value" id="fightNumber" placeholder="-" aria-label="Kampfnummer">
+                </div>
+
+                <div class="info-block">
+                    <div class="timer" id="timerDisplay">02:00</div>
+                </div>
+
+                <div class="info-block">
+                    <div class="info-label">Kategorie</div>
+                    <input class="inline-info-input info-value" id="category" placeholder="-" aria-label="Kategorie">
+                </div>
+
+                <div class="info-block">
+                    <div class="info-label">Nächste Begegnung</div>
+                    <input class="inline-info-input info-value" id="nextFight" placeholder="-" aria-label="Nächste Begegnung">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="https://cdn.socket.io/4.8.3/socket.io.min.js" integrity="sha384-kzavj5fiMwLKzzD1f8S7TeoVIEi7uKHvbTA3ueZkrzYq75pNQUiUi6Dy98Q3fxb0" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='scoreboard.js') }}"></script>
+
+
+    </body>
+    </html>

@@ -1,32 +1,139 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Karate Score</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://cdn.socket.io/4.8.3/socket.io.min.js" integrity="sha384-kzavj5fiMwLKzzD1f8S7TeoVIEi7uKHvbTA3ueZkrzYq75pNQUiUi6Dy98Q3fxb0" crossorigin="anonymous"></script>
-  </head>
-  <body>
-    <main>
-      <h1>Scoreboard Kumite</h1>
-      <section class="score-panels" aria-label="Scoreboard">
-        <article class="score-panel score-panel-red">
-          <div class="opponent">
-            <h2 class="opponent-name">Aka</h2>
-            <p class="club-name">Karate Club</p>
-          </div>
-          <div class="score">0</div>
-        </article>
-        <article class="score-panel score-panel-blue">
-          <div class="opponent">
-            <h2 class="opponent-name">Ao</h2>
-            <p class="club-name">Karate Club</p>
-          </div>
-          <div class="score">0</div>
-        </article>
-      </section>
-    </main>
-    <script src="{{ url_for('static', filename='application.js') }}"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>DJKB Karate Score</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='scoreboard.css') }}">
+    <link rel="icon" href="favicon.ico" sizes="16x16" type="../images/vnd.microsoft.icon">
+</head>
+<body>
+
+<div class="display" id="displayArea">
+
+    <!-- AKA -->
+    <div class="fighter aka">
+
+        <div class="fighter-left">
+            <div class="flag" id="akaFlagDisplay">🇩🇪</div>
+
+            <div class="fighter-info">
+                <h1 id="akaNameDisplay">AKA</h1>
+                <h2 id="akaClubDisplay">Verein</h2>
+            </div>
+        </div>
+
+        <div class="fighter-right">
+
+            <div class="score-box">
+                <div class="label">IPPON</div>
+                <div class="value" id="akaIppon">0</div>
+            </div>
+
+            <div class="score-box">
+                <div class="label">WAZA-ARI</div>
+                <div class="value" id="akaWaza">0</div>
+            </div>
+
+            <div class="penalties">
+
+                <div class="penalty-row">
+                    <div class="penalty-label">JOGAI</div>
+                    <div class="dots" id="akaPenalty0"></div>
+                </div>
+
+                <div class="penalty-row">
+                    <div class="penalty-label">MUBOBI</div>
+                    <div class="dots" id="akaPenalty1"></div>
+                </div>
+
+                <div class="penalty-row">
+                    <div class="penalty-label">Strafe</div>
+                    <div class="dots" id="akaPenalty2"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SHIRO -->
+    <div class="fighter shiro">
+
+        <div class="fighter-left">
+            <div class="flag" id="shiroFlagDisplay">🇯🇵</div>
+
+            <div class="fighter-info">
+                <h1 id="shiroNameDisplay">SHIRO</h1>
+                <h2 id="shiroClubDisplay">Verein</h2>
+            </div>
+        </div>
+
+        <div class="fighter-right">
+
+            <div class="score-box">
+                <div class="label">IPPON</div>
+                <div class="value" id="shiroIppon">0</div>
+            </div>
+
+            <div class="score-box">
+                <div class="label">WAZA-ARI</div>
+                <div class="value" id="shiroWaza">0</div>
+            </div>
+
+            <div class="penalties">
+                <div class="penalty-row">
+                    <div class="penalty-label">JOGAI</div>
+                    <div class="dots" id="shiroPenalty0"></div>
+                </div>
+
+                <div class="penalty-row">
+                    <div class="penalty-label">MUBOBI</div>
+                    <div class="dots" id="shiroPenalty1"></div>
+                </div>
+
+                <div class="penalty-row">
+                    <div class="penalty-label">Strafe</div>
+                    <div class="dots" id="shiroPenalty2"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MATCH INFO -->
+    <div class="match-info">
+
+        <div class="info-block">
+            <div class="info-label">Kampf</div>
+            <div class="info-value" id="fightDisplay">-</div>
+        </div>
+
+        <div class="info-block">
+            <div class="timer" id="timerDisplay">02:00</div>
+        </div>
+
+        <div class="info-block">
+            <div class="info-label">Kategorie</div>
+            <div class="info-value" id="categoryDisplay">-</div>
+        </div>
+
+        <div class="info-block">
+            <div class="info-label">Nächste Begegnung</div>
+            <div class="info-value" id="nextFightDisplay">-</div>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.socket.io/4.8.3/socket.io.min.js" integrity="sha384-kzavj5fiMwLKzzD1f8S7TeoVIEi7uKHvbTA3ueZkrzYq75pNQUiUi6Dy98Q3fxb0" crossorigin="anonymous"></script>
+<script>
+    window.scoreboardInitialState = {{ current_score|tojson }};
+</script>
+<script src="{{ url_for('static', filename='scoreboard.js') }}"></script>
+
+</body>
 </html>
