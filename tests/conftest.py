@@ -6,6 +6,7 @@ default_config = {
     'TESTING': True,
     'HOST': 'http://localhost',
     'STATIC_FOLDER': os.path.join(os.getcwd(), 'manual_generator', 'static'),
+    'ADMIN_PASSWORD': 'test-password',
 }
 
 

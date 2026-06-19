@@ -1,6 +1,6 @@
 [project]
 name = "karate-score"
-version = "0.1.0"
+version = "0.1.1"
 description = "Score Board for a Karate tournament"
 authors = [
     { name = "Hannes Müller", email = "hannes.mueller@watttron.com" },

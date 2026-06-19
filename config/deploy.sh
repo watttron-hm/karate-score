@@ -58,7 +58,7 @@ ssh "${REMOTE}" "mkdir -p '${REMOTE_RELEASE_DIR}/dist' '${REMOTE_RELEASE_DIR}/co
 
 echo "Transferring wheel and Docker build files..."
 scp "${WHEEL_FILE}" "${REMOTE}:${REMOTE_RELEASE_DIR}/dist/"
-scp "${SCRIPT_DIR}/Dockerfile" "${SCRIPT_DIR}/application.toml" "${REMOTE}:${REMOTE_RELEASE_DIR}/config/"
+scp "${SCRIPT_DIR}/Dockerfile" "${REMOTE}:${REMOTE_RELEASE_DIR}/config/"
 
 echo "Building Docker image on ${DEPLOY_HOST}..."
 ssh "${REMOTE}" "cd '${REMOTE_RELEASE_DIR}' && docker build -f config/Dockerfile -t '${IMAGE_NAME}:latest' ."

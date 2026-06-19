@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login | Karate Score</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <main class="login-page">
+      <form class="login-form" method="post">
+        <h1>Scoreboard Login</h1>
+
+        {% if error %}
+          <p class="login-error">{{ error }}</p>
+        {% endif %}
+
+        <label for="password">Passwort</label>
+        <input id="password" name="password" type="password" autofocus required>
+
+        <button type="submit">Login</button>
+      </form>
+    </main>
+  </body>
+</html>

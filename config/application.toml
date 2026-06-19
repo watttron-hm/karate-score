@@ -1,1 +1,3 @@
 SECRET_KEY="dev" # Random value. Generate a value by https://www.uuidgenerator.net/version4
+ADMIN_PASSWORD="super-secret"
+GAME_STORE_PATH="store_path/"
